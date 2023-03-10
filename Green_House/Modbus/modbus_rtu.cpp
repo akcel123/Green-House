@@ -6,13 +6,18 @@
  */
 
 #include "modbus_rtu.h"
+namespace Modbus {
 
-ModbusRtu::ModbusRtu() {
-	// TODO Auto-generated constructor stub
 
-}
 
-ModbusRtu::~ModbusRtu() {
-	// TODO Auto-generated destructor stub
+	ModbusRtu::ModbusRtu() {
+		// TODO Auto-generated constructor stub
+
+	}
+
+	ModbusRtu::~ModbusRtu() {
+		// TODO Auto-generated destructor stub
+	}
+
 }
 

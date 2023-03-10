@@ -8,13 +8,25 @@
 #ifndef MODBUS_RTU_H_
 #define MODBUS_RTU_H_
 
-class ModbusRtu {
-public:
-	ModbusRtu();
+namespace Modbus {
 
 
 
-	virtual ~ModbusRtu();
-};
+
+	class ModbusRtu {
+	private:
+
+
+
+	public:
+		ModbusRtu();
+
+
+
+		virtual ~ModbusRtu();
+	};
+
+}
+
 
 #endif /* MODBUS_RTU_H_ */

@@ -30,11 +30,11 @@
 #include "program_timer.h"
 void foo1() {}
 using namespace ProgramTimer;
-Timer timer(0, 1, foo1);
+TimerInterface* timer = new Timer(0, 1, foo1);
 
 int main(void)
 {
-	timer.count_ = 0;
+	timer->Update();
 	/* Loop forever */
 	for(;;);
 }

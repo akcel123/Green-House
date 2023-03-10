@@ -25,6 +25,7 @@
 #define PROGRAM_TIMER_H_
 
 #include <stdint.h>
+#include "timer_interface.h"
 
 namespace ProgramTimer {
 
@@ -38,17 +39,12 @@ namespace ProgramTimer {
 		kTimingsError			//возвращает данное значение при неправильно заданных параметрах, на основании которых невозможно реализовать программный таймер
 	} CalcTimingState;
 
-	typedef void (*TimerCallback)(); //ссылка на функция колбека таймера
-	typedef void (*TimerCallbackWithArgument)(void*); //ссылка на функция колбека таймера
-
-	class Timer {
+	class Timer: public TimerInterface {
 	private:
 		uint32_t count_;									//счетчик программного таймера
 		uint32_t callback_end_count_;						//значение, до которого необходимо вести счет, как досчитает, вызывается колбек
 		ProgrammTimerState state_; 							//состояние программного таймера
 		CalcTimingState calc_timing_state_; 				//Проверка правильности подсчета таймингов
-		TimerCallback callback_;							//колбек таймера, который не имеет аргументов (задается пользователем)
-		TimerCallbackWithArgument callback_with_arg_;		//колбек таймера с ссылкой на аргумент (задается пользователем)
 		void *arg_;											//ссылка на аргумент для коллбека
 		bool callback_with_arg_flag_ = false;				//флаг наличия функции с аргументом
 	public:
@@ -56,25 +52,11 @@ namespace ProgramTimer {
 		//Timer(uint32_t main_freq, float timer_freq, TimerCallbackWithArgument timer_callback, void* arg);
 		Timer(uint32_t main_freq, uint32_t timer_freq, TimerCallback timer_callback);
 		//Timer(uint32_t main_freq, float timer_freq, TimerCallback timer_callback);
-
-		//TODO Вернуть на место
-
-
-
-
-		//---------------------------------------------------------------------------------------------------
-		//	функция Update()
-		//
-		//	Данную функию необходимо помещать в основной колбек, она высчитывает необходимую задержку
-		//	и вызывает функцию колбека
-		//---------------------------------------------------------------------------------------------------
-		void Update();
-		void Start() {this->state_ = kTimerOn;}
-		void Stop() {this->state_ = kTimerOff;}
+		void Update() override;
+		void Start() override {this->state_ = kTimerOn;}
+		void Stop() override {this->state_ = kTimerOff;}
 		CalcTimingState GetCalcTimingState() {return calc_timing_state_;}
-
-
-
+		//virtual ~Timer() {}
 	};
 
 
