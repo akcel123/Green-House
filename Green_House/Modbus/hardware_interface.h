@@ -8,6 +8,8 @@
 #ifndef MODBUS_HARDWARE_INTERFACE_H_
 #define MODBUS_HARDWARE_INTERFACE_H_
 
+#include <stdint.h>
+
 namespace Modbus {
 
 	//состояния интерфейса передачи данных
@@ -18,9 +20,6 @@ namespace Modbus {
 
 	class HardwareInterface {
 	public:
-		virtual void Update() = 0;		//Данную функию необходимо помещать в основной колбек, она высчитывает необходимую задержку и вызывает функцию колбека
-		virtual void Start() = 0;
-		virtual void Stop() = 0;
 		virtual void SendData() = 0;	// Данная функция ОБЯЗАТЕЛЬНО должна отправлять из буффера tx_buf, количеством tx_len
 		uint32_t GetCurrentBaudrate() {return current_baudrate_;}
 		uint8_t tx_buf[255];

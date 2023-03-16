@@ -25,6 +25,16 @@ namespace Modbus {
 
 	};
 
+	void Callback35tWrapper(void* obj) {
+		ModbusRtu* mb_obg = (ModbusRtu*)obj;
+		ModbusRtu::Callback35t(mb_obg);
+	}
+
+	void Callback15tWrapper(void* obj) {
+		ModbusRtu* mb_obg = (ModbusRtu*)obj;
+		ModbusRtu::Callback15t(mb_obg);
+	}
+
 
 
 	ModbusRtu::ModbusRtu(TimerInterface* timer, HardwareInterface* interface, Mode mode) {

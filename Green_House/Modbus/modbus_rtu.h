@@ -8,14 +8,16 @@
 #ifndef MODBUS_RTU_H_
 #define MODBUS_RTU_H_
 
-#include "program_timer.h"
-#include "modbus_enums.h"
+#include "timer_interface.h"
+
 #include "hardware_interface.h"
 #include "crc_calculator.h"
 
+#include "modbus_enums.h"
 #include "modbus_init_structs.h"
 #include "modbus_responses.h"
 #include "modbus_requests.h"
+
 //-------------------------------------------------------------
 //	Определяет максимальный размер пакета (в байтах),
 //	принятого за одну транзакцию
@@ -194,15 +196,6 @@ namespace Modbus {
 	};
 
 
-	void Callback35tWrapper(void* obj) {
-		ModbusRtu* mb_obg = (ModbusRtu*)obj;
-		ModbusRtu::Callback35t(mb_obg);
-	}
-
-	void Callback15tWrapper(void* obj) {
-		ModbusRtu* mb_obg = (ModbusRtu*)obj;
-		ModbusRtu::Callback15t(mb_obg);
-	}
 
 
 

@@ -1,6 +1,8 @@
 #ifndef _TIMER_INTERFACE_H_
 #define _TIMER_INTERFACE_H_
 
+#include <stdint.h>
+
 typedef void (*TimerCallback)(); //ссылка на функция колбека таймера
 typedef void (*TimerCallbackWithArgument)(void*); //ссылка на функция колбека таймера
 

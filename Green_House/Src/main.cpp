@@ -29,14 +29,14 @@
 // TODO временно пишу инклуды и объект тут для работы компилятора
 #include "program_timer.h"
 #include "crc_calculator.h"
+#include "modbus_rtu.h"
 void foo1() {}
 using namespace ProgramTimer;
 TimerInterface* timer = new Timer(0, (float)1, foo1);
 
 int main(void)
 {
-	timer->Update();
-	timer->SetCallback(foo1);
+
 	/* Loop forever */
 	for(;;);
 }

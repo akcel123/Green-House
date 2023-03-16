@@ -33,7 +33,6 @@ namespace ProgramTimer {
 	private:
 		uint32_t count_;									//счетчик программного таймера
 		uint32_t callback_end_count_;						//значение, до которого необходимо вести счет, как досчитает, вызывается колбек
-		void* arg_;											//ссылка на аргумент для коллбека
 		bool callback_with_arg_flag_ = false;				//флаг наличия функции с аргументом
 		uint32_t main_freq_;
 	public:
