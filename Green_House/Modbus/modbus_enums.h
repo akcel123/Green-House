@@ -50,26 +50,6 @@ namespace Modbus {
 	} Error;
 
 
-	//состояния программного таймера
-	typedef enum {
-		kOn = 0,
-		kOff
-	} ProgrammTimer;
-
-	//состояния интерфейса передачи данных
-	typedef enum {
-		kSucsecc = 0,
-		kBusy
-	} InterfaceStates;
-
-	//индексы для массива задержек при использовании аппаратного таймера
-	typedef enum {
-		kPosDelay15t = 0,
-		kPosDelay35t,
-		kPosDelayNoPackage,
-		kSizeOfDelayTable
-	} Delays;
-
 
 	//все поддерживаемые команды
 	typedef enum {
