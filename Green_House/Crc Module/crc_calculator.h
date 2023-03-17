@@ -14,12 +14,20 @@ namespace Crc {
 
 
 	class CrcCalculator {
+		static CrcCalculator* instance;
+		CrcCalculator() {}
+
 	public:
-		static CrcCalculator shared;
+		static CrcCalculator* getInstance() {
+			if (instance == nullptr) { // если экземпляр еще не создан
+				instance = new CrcCalculator(); // создаем экземпляр
+			}
+			return instance; // возвращаем указатель на экземпляр
+		}
+
 		bool CheckCrc(uint8_t* buffer, uint8_t num_of_bytes, uint16_t checked_crc);
 		uint16_t CrcCalc(uint8_t* buffer, uint8_t num_of_bytes);
 	private:
-		CrcCalculator() {}
 
 
 
@@ -68,6 +76,5 @@ namespace Crc {
 		};
 
 	};
-
 }
 #endif /* MODBUS_CRCCALCULATOR_H_ */

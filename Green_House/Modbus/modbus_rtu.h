@@ -9,9 +9,7 @@
 #define MODBUS_RTU_H_
 
 #include "timer_interface.h"
-
 #include "hardware_interface.h"
-#include "crc_calculator.h"
 
 #include "modbus_enums.h"
 #include "modbus_init_structs.h"

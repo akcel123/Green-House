@@ -64,17 +64,17 @@ void TIM14Init() {
 	htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	htim14.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 	if (HAL_TIM_Base_Init(&htim14) != HAL_OK) {
-	  //Error_Handler();
+		//Error_Handler();
 	}
 }
 
-void TIM8_TRG_COM_TIM14_IRQHandler(void) {
+extern "C" void TIM8_TRG_COM_TIM14_IRQHandler() {
 
 	HAL_TIM_IRQHandler(&htim14);
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-
+	// СНАЧАЛА таймер, потом модбас (так логика точно не нарушится)
 	program_timer->Update();
 	modbus.Update();
 }
@@ -84,7 +84,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 //				SYSTICK (1 kHz)
 //===================================================
 
-void SysTick_Handler(void) {
+extern "C" void SysTick_Handler(void) {
 
 	HAL_IncTick();
 }

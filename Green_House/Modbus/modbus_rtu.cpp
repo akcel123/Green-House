@@ -6,7 +6,7 @@
  */
 
 #include "modbus_rtu.h"
-
+#include "crc_calculator.h"
 // XXX Необходимо реализовать доступ к глобальным регистрам и подумать как это сделать
 
 
@@ -295,7 +295,7 @@ namespace Modbus {
 
 	bool ModbusRtu::CheckPackageCrc() {
 		uint16_t checked_crc = this->interface_->rx_buf[this->interface_->rx_len - 2] << 8 | this->interface_->rx_buf[this->interface_->rx_len - 1];
-		bool crc_match = Crc::CrcCalculator::shared.CheckCrc(this->interface_->rx_buf, this->interface_->rx_len, checked_crc);
+		bool crc_match = Crc::CrcCalculator::getInstance()->CheckCrc(this->interface_->rx_buf, this->interface_->rx_len, checked_crc);
 		return crc_match;
 	}
 
@@ -754,7 +754,7 @@ namespace Modbus {
 		if (this->params_.len_ > 8)
 			this->interface_->tx_buf[(this->interface_->tx_len)++] = out_state >> 8;
 
-		crc16 = Crc::CrcCalculator::shared.CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
 		this->interface_->tx_buf[this->interface_->tx_len + 0] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len + 1] = (crc16) & 0xFF;
 		this->interface_->tx_len += 2;
@@ -777,7 +777,7 @@ namespace Modbus {
 		if (this->params_.len_ / 8 > 0)
 			this->interface_->tx_buf[(this->interface_->tx_len)++] = out_state >> 8;
 
-		crc16 = Crc::CrcCalculator::shared.CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
 		this->interface_->tx_buf[this->interface_->tx_len + 0] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len + 1] = (crc16) & 0xFF;
 		this->interface_->tx_len += 2;
@@ -799,7 +799,7 @@ namespace Modbus {
 		this->interface_->tx_buf[4] = (this->params_.val_ >> 8) & 0xFF;
 		this->interface_->tx_buf[5] = (this->params_.val_) & 0xFF;
 
-		crc16 = Crc::CrcCalculator::shared.CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
 		this->interface_->tx_buf[this->interface_->tx_len + 0] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len + 1] = (crc16) & 0xFF;
 		this->interface_->tx_len += 2;
@@ -828,7 +828,7 @@ namespace Modbus {
 		this->interface_->tx_buf[5] = (this->params_.len_) & 0xFF;
 
 
-		crc16 = Crc::CrcCalculator::shared.CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
 		this->interface_->tx_buf[this->interface_->tx_len + 0] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len + 1] = (crc16) & 0xFF;
 		this->interface_->tx_len += 2;
@@ -902,7 +902,7 @@ namespace Modbus {
 		this->interface_->tx_len = 3;
 		this->interface_->tx_len += this->params_.numBytes_;
 
-		crc16 = Crc::CrcCalculator::shared.CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
 		this->interface_->tx_buf[this->interface_->tx_len + 0] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len + 1] = (crc16) & 0xFF;
 		this->interface_->tx_len += 2;
@@ -980,7 +980,7 @@ namespace Modbus {
 		this->interface_->tx_buf[4] = (this->params_.numReg_ >> 8) & 0xFF;
 		this->interface_->tx_buf[5] = (this->params_.numReg_) & 0xFF;
 
-		crc16 = Crc::CrcCalculator::shared.CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
 		this->interface_->tx_buf[this->interface_->tx_len - 2] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len - 1] = (crc16) & 0xFF;
 	}
@@ -1000,7 +1000,7 @@ namespace Modbus {
 			this->interface_->tx_buf[3 + this->device_parameters_.size_of_server_id] = 0xFF;
 		else
 			this->interface_->tx_buf[3 + this->device_parameters_.size_of_server_id] = 0x00;
-		crc16 = Crc::CrcCalculator::shared.CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
 		this->interface_->tx_buf[this->interface_->tx_len - 2] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len - 1] = (crc16) & 0xFF;
 	}
@@ -1012,7 +1012,7 @@ namespace Modbus {
 		this->interface_->tx_buf[0] = this->params_.id_;
 		this->interface_->tx_buf[1] = this->params_.command_ | 0x80;
 		this->interface_->tx_buf[2] = this->exception_code_;
-		crc16 = Crc::CrcCalculator::shared.CrcCalc(this->interface_->tx_buf, 3);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, 3);
 		this->interface_->tx_buf[3] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[4] = (crc16) & 0xFF;
 		this->interface_->tx_len = 5;
@@ -1175,7 +1175,7 @@ namespace Modbus {
 		this->interface_->tx_buf[5] = (this->params_.numReg_ >> 0) & 0xFF;
 
 
-		crc16 = Crc::CrcCalculator::shared.CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
 
 		this->interface_->tx_buf[this->interface_->tx_len + 0] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len + 1] = (crc16) & 0xFF;
@@ -1190,7 +1190,7 @@ namespace Modbus {
 		this->interface_->tx_buf[3] = (this->params_.addr_ >> 0) & 0xFF;
 		this->interface_->tx_buf[4] = (this->params_.numReg_ >> 8) & 0xFF;
 		this->interface_->tx_buf[5] = (this->params_.numReg_ >> 0) & 0xFF;
-		crc16 = Crc::CrcCalculator::shared.CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
 		this->interface_->tx_buf[this->interface_->tx_len + 0] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len + 1] = (crc16) & 0xFF;
 		this->interface_->tx_len += 2;
@@ -1204,7 +1204,7 @@ namespace Modbus {
 		this->interface_->tx_buf[3] = (this->params_.addr_ >> 0) & 0xFF;
 		this->interface_->tx_buf[4] = (this->params_.numReg_ >> 8) & 0xFF;
 		this->interface_->tx_buf[5] = (this->params_.numReg_ >> 0) & 0xFF;
-		crc16 = Crc::CrcCalculator::shared.CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
 		this->interface_->tx_buf[this->interface_->tx_len + 0] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len + 1] = (crc16) & 0xFF;
 		this->interface_->tx_len += 2;
@@ -1218,7 +1218,7 @@ namespace Modbus {
 		this->interface_->tx_buf[3] = (this->params_.addr_ >> 0) & 0xFF;
 		this->interface_->tx_buf[4] = (this->params_.val_ >> 8) & 0xFF;
 		this->interface_->tx_buf[5] = (this->params_.val_ >> 0) & 0xFF;
-		crc16 = Crc::CrcCalculator::shared.CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
 		this->interface_->tx_buf[this->interface_->tx_len + 0] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len + 1] = (crc16) & 0xFF;
 		this->interface_->tx_len += 2;
@@ -1241,7 +1241,7 @@ namespace Modbus {
 			this->interface_->tx_buf[(this->interface_->tx_len)++] = temp_coil_val[i];
 		}
 
-		crc16 = Crc::CrcCalculator::shared.CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
 		this->interface_->tx_buf[this->interface_->tx_len + 0] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len + 1] = (crc16) & 0xFF;
 		this->interface_->tx_len += 2;
@@ -1265,7 +1265,7 @@ namespace Modbus {
 			this->interface_->tx_buf[(this->interface_->tx_len)++] = (buff_for_write[i]) & 0x00FF;
 		}
 
-		crc16 = Crc::CrcCalculator::shared.CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
 		this->interface_->tx_buf[this->interface_->tx_len + 0] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len + 1] = (crc16) & 0xFF;
 		this->interface_->tx_len += 2;
@@ -1276,7 +1276,7 @@ namespace Modbus {
 		this->interface_->tx_len = 2;
 		this->interface_->tx_buf[0] = this->params_.id_;
 		this->interface_->tx_buf[1] = this->params_.command_;
-		crc16 = Crc::CrcCalculator::shared.CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
 		this->interface_->tx_buf[this->interface_->tx_len] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len + 1] = (crc16) & 0xFF;
 		this->interface_->tx_len += 2;

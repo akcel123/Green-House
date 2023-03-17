@@ -9,6 +9,8 @@
 
 namespace Crc {
 
+	CrcCalculator* CrcCalculator::instance = nullptr;
+
 	uint16_t CrcCalculator::CrcCalc(uint8_t* buffer, uint8_t num_of_bytes) {
 		uint8_t crc_hi_table = 0xFF, crc_lo_table = 0xFF, crc_counter = 0;
 		for(uint8_t i = 0; i < num_of_bytes; ++i)
