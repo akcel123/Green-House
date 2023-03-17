@@ -7,7 +7,7 @@
 
 #include "modbus_rtu.h"
 
-// TODO Необходимо реализовать доступ к глобальным регистрам и подумать как это сделать
+// XXX Необходимо реализовать доступ к глобальным регистрам и подумать как это сделать
 
 
 namespace Modbus {
@@ -47,7 +47,7 @@ namespace Modbus {
 
 
 	ModbusRtu::~ModbusRtu() {
-		// TODO Auto-generated destructor stub
+
 	}
 
 	void ModbusRtu::Init(Mode mode) {
@@ -111,7 +111,6 @@ namespace Modbus {
 	}
 
 
-	// TODO колбек, возникающий при превышении времени ожидания между пакетами 1.5 чара
 	void ModbusRtu::Callback15t(ModbusRtu* obj)	{
 
 		if(obj->mode_ == kMaster) return;
@@ -126,7 +125,6 @@ namespace Modbus {
 
 	}
 
-	// TODO колбек, возникающий при превышении времени ожидания между пакетами 3.5 чара
 	void ModbusRtu::Callback35t(ModbusRtu* obj)	{
 		obj->timer_->Stop();
 
@@ -256,7 +254,7 @@ namespace Modbus {
 			this->state_ = kWaitData;
 			this->data_.state_ = kClearPackage;
 
-			// TODO почему в функцию передается коллбек 35t???
+			// XXX почему в функцию передается коллбек 35t???
 			this->timer_->Stop();
 			this->timer_->SetCallBackWithArg(Callback35tWrapper, (void*)this);
 			this->CalculateTimings35t(this->interface_->GetCurrentBaudrate());

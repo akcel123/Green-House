@@ -8,6 +8,7 @@
 #ifndef SRC_MAIN_H_
 #define SRC_MAIN_H_
 
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,5 +22,7 @@ extern "C" {
 }
 #endif
 
+
+void TIM14Init();
 
 #endif /* SRC_MAIN_H_ */

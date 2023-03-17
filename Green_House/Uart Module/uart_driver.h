@@ -9,20 +9,30 @@
 #define UART_MODULE_UART_DRIVER_H_
 
 #include "hardware_interface.h"
+#include "stm32f7xx_hal.h"
 using namespace Modbus;
+
+
+
 
 namespace Uart {
 
 	class UartDriver: public HardwareInterface {
+	private:
 
+		UART_HandleTypeDef huart;
+		uint8_t buf_for_reseive_byte;
 
+		void GpioInit();
+		void ResetProperties();
 	public:
-		UartDriver();
+		UartDriver(uint16_t baudrate);
 
-		void RxCallback();
+		void Init();
+		void RxCallback();			// колбек по принятию очередного байта
+		void RxItHandler();
 
 		void SendData() override;	// Данная функция ОБЯЗАТЕЛЬНО должна отправлять из буффера tx_buf, количеством tx_len
-
 
 	};
 

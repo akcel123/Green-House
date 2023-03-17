@@ -9,13 +9,18 @@
 
 namespace ProgramTimer {
 
+	Timer::Timer(uint32_t main_freq) {
+		this->state_ = kTimerOff;
+		this->main_freq_ = main_freq;
+	}
+
 	Timer::Timer(uint32_t main_freq, uint32_t timer_freq, TimerCallbackWithArgument timer_callback_with_arg, void* arg) {
 		this->state_ = kTimerOff;
 		this->arg_ = arg;
 		this->callback_with_arg_ = timer_callback_with_arg;
 		this->main_freq_ = main_freq;
 		this->callback_end_count_ = main_freq / timer_freq;
-		this->callback_with_arg_flag_ = true;
+		this->callback_with_arg_flag = true;
 		this->calc_timing_state_= this->callback_end_count_ ? kSucsess : kTimingsError;
 	}
 
@@ -25,7 +30,7 @@ namespace ProgramTimer {
 		this->callback_ = timer_callback;
 		this->main_freq_ = main_freq;
 		this->callback_end_count_ = main_freq / timer_freq;
-		this->callback_with_arg_flag_ = false;
+		this->callback_with_arg_flag = false;
 		this->calc_timing_state_= this->callback_end_count_ ? kSucsess : kTimingsError;
 	}
 
@@ -35,7 +40,7 @@ namespace ProgramTimer {
 		this->callback_with_arg_ = timer_callback_with_arg;
 		this->main_freq_ = main_freq;
 		this->callback_end_count_ = (float)main_freq / timer_freq;
-		this->callback_with_arg_flag_ = true;
+		this->callback_with_arg_flag = true;
 		this->calc_timing_state_= this->callback_end_count_ ? kSucsess : kTimingsError;
 	}
 
@@ -45,7 +50,7 @@ namespace ProgramTimer {
 		this->callback_ = timer_callback;
 		this->main_freq_ = main_freq;
 		this->callback_end_count_ = (float)main_freq / timer_freq;
-		this->callback_with_arg_flag_ = false;
+		this->callback_with_arg_flag = false;
 		this->calc_timing_state_= this->callback_end_count_ ? kSucsess : kTimingsError;
 	}
 
@@ -57,7 +62,7 @@ namespace ProgramTimer {
 		this->count_++;
 		if((this->count_ >= this->callback_end_count_))
 		{
-			if (this->callback_with_arg_flag_) {
+			if (this->callback_with_arg_flag) {
 				this->callback_with_arg_(this->arg_);
 			} else {
 				this->callback_();

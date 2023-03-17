@@ -33,13 +33,14 @@ namespace ProgramTimer {
 	private:
 		uint32_t count_;									//счетчик программного таймера
 		uint32_t callback_end_count_;						//значение, до которого необходимо вести счет, как досчитает, вызывается колбек
-		bool callback_with_arg_flag_ = false;				//флаг наличия функции с аргументом
+		bool callback_with_arg_flag = false;				//флаг наличия функции с аргументом
 		uint32_t main_freq_;
 	public:
 		Timer(uint32_t main_freq, uint32_t timer_freq, TimerCallbackWithArgument timer_callback, void* arg);
 		Timer(uint32_t main_freq, float timer_freq, TimerCallbackWithArgument timer_callback, void* arg);
 		Timer(uint32_t main_freq, uint32_t timer_freq, TimerCallback timer_callback);
 		Timer(uint32_t main_freq, float timer_freq, TimerCallback timer_callback);
+		Timer(uint32_t main_freq);
 		void Update() override;
 		void Start() override {this->state_ = kTimerOn;}
 		void Stop() override {this->state_ = kTimerOff;}
