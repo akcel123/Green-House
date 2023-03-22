@@ -31,7 +31,7 @@ namespace Uart {
 		void Init();
 		void RxCallback();			// колбек по принятию очередного байта
 		void RxItHandler();
-
+		void TxCallback();
 		void SendData() override;	// Данная функция ОБЯЗАТЕЛЬНО должна отправлять из буффера tx_buf, количеством tx_len
 
 	};

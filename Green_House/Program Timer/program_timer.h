@@ -48,6 +48,7 @@ namespace ProgramTimer {
 		void CalculateNewTimings(uint32_t timer_freq) override;
 		void CalculateNewTimings(float timer_freq) override;
 		CalcTimingState GetCalcTimingState() {return calc_timing_state_;}
+		void SetCallBackWithArg(TimerCallbackWithArgument callback_with_arg, void* arg) override {this->callback_with_arg_ = callback_with_arg; this->arg_ = arg; this->callback_with_arg_flag = true;}
 		//virtual ~Timer() {}
 	};
 

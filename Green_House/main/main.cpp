@@ -3,6 +3,7 @@
 #include "uart_driver.h"
 #include "modbus_rtu.h"
 #include "program_timer.h"
+#include "device_parameters.h"
 
 // FIXME нужно ли предупреждение ниже?
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
@@ -17,7 +18,7 @@ using namespace Uart;
 
 
 TimerInterface* program_timer = new Timer(10000);
-UartDriver* uart_interface = new UartDriver(19200U);
+UartDriver* uart_interface = new UartDriver(19200U);	//uart tx работает, rx работает.
 ModbusRtu modbus(program_timer, (HardwareInterface*)uart_interface, kSlave);
 TIM_HandleTypeDef htim14;
 
@@ -28,6 +29,21 @@ int main(void)
 	Rcc::RccDriver::InitSystemClock();
 	uart_interface->Init();
 	TIM14Init();
+
+
+	// TODO: Создать вспомогательные переменные, массивы и заполнить структуру ниже
+	DeviceParameters parameters = {
+			.coils_state = 0,
+			.num_of_coils = 0,
+			.discrete_in_state = 0,
+			.num_of_discrete_in = 0,
+			.holding_registers = 0,
+			.num_of_holding_registers = 12,
+			.server_id = server_id,
+			.size_of_server_id = sizeof(server_id)
+	};
+	modbus.id = 1;
+	modbus.SetDeviceParameters(parameters);
 
 	/* Loop forever */
 	for(;;);
@@ -45,9 +61,11 @@ extern "C" void USART1_IRQHandler(void) {
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
 	modbus.SetTransmitCompleteFlag();
+	uart_interface->TxCallback();
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+
 	uart_interface->RxCallback();
 	modbus.RxCallback();
 }
@@ -56,6 +74,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 //				TIMER_IT
 //===================================================
 void TIM14Init() {
+
+    __HAL_RCC_TIM14_CLK_ENABLE();
 
 	htim14.Instance = TIM14;
 	htim14.Init.Prescaler = 216;
@@ -66,6 +86,12 @@ void TIM14Init() {
 	if (HAL_TIM_Base_Init(&htim14) != HAL_OK) {
 		//Error_Handler();
 	}
+
+    /* TIM14 interrupt Init */
+    HAL_NVIC_SetPriority(TIM8_TRG_COM_TIM14_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(TIM8_TRG_COM_TIM14_IRQn);
+
+    HAL_TIM_Base_Start_IT(&htim14);
 }
 
 extern "C" void TIM8_TRG_COM_TIM14_IRQHandler() {

@@ -25,7 +25,7 @@ public:
 	virtual void CalculateNewTimings(uint32_t timer_freq) = 0;
 	virtual void CalculateNewTimings(float timer_freq) = 0;
 	void SetCallback(TimerCallback callback) {this->callback_ = callback;}
-	void SetCallBackWithArg(TimerCallbackWithArgument callback_with_arg, void* arg) {this->callback_with_arg_ = callback_with_arg; this->arg_ = arg;}
+	virtual void SetCallBackWithArg(TimerCallbackWithArgument callback_with_arg, void* arg) {this->callback_with_arg_ = callback_with_arg; this->arg_ = arg;}
 	CalcTimingState GetTimingState() {return this->calc_timing_state_;}
 	ProgrammTimerState GetTimerState() {return this->state_;}
 protected:

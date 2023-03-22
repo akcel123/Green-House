@@ -295,7 +295,7 @@ namespace Modbus {
 
 	bool ModbusRtu::CheckPackageCrc() {
 		uint16_t checked_crc = this->interface_->rx_buf[this->interface_->rx_len - 2] << 8 | this->interface_->rx_buf[this->interface_->rx_len - 1];
-		bool crc_match = Crc::CrcCalculator::getInstance()->CheckCrc(this->interface_->rx_buf, this->interface_->rx_len, checked_crc);
+		bool crc_match = Crc::CrcCalculator::getInstance()->CheckCrc(this->interface_->rx_buf, this->interface_->rx_len - 2, checked_crc);
 		return crc_match;
 	}
 

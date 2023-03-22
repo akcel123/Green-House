@@ -62,7 +62,7 @@ namespace Uart {
 		if (HAL_UART_Init(&huart) != HAL_OK) {
 			//Error_Handler();
 		}
-		RxCallback();
+		HAL_UART_Receive_IT(&(this->huart), (uint8_t*)&this->buf_for_reseive_byte, 1);
 	}
 
 	void UartDriver::ResetProperties() {
@@ -75,6 +75,7 @@ namespace Uart {
 	}
 
 	void UartDriver::SendData() {
+		this->state_ = kBusy;
 		HAL_UART_Transmit_IT(&huart, tx_buf, tx_len);
 	}
 
@@ -82,6 +83,10 @@ namespace Uart {
 
 		this->rx_buf[this->rx_len++] = this->buf_for_reseive_byte;
 		HAL_UART_Receive_IT(&(this->huart), (uint8_t*)&this->buf_for_reseive_byte, 1);
+	}
+
+	void UartDriver::TxCallback() {
+		this->state_ = kSucsecc;
 	}
 
 	void UartDriver::RxItHandler() {
