@@ -4,6 +4,8 @@
 #include "modbus_rtu.h"
 #include "program_timer.h"
 #include "device_parameters.h"
+#include "discrete_out.h"
+
 
 // FIXME нужно ли предупреждение ниже?
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
@@ -14,12 +16,14 @@
 using namespace ProgramTimer;
 using namespace Modbus;
 using namespace Uart;
-
+using namespace DiscreteIO;
 
 
 TimerInterface* program_timer = new Timer(10000);
 UartDriver* uart_interface = new UartDriver(19200U);	//uart tx работает, rx работает.
 ModbusRtu modbus(program_timer, (HardwareInterface*)uart_interface, kSlave);
+DiscreteOut* out_pins = new DiscreteOut();
+
 TIM_HandleTypeDef htim14;
 
 int main(void)
@@ -30,7 +34,8 @@ int main(void)
 	uart_interface->Init();
 	TIM14Init();
 
-
+	out_pins->Init();
+	out_pins->SetDiscreteOutState(0xFFFFFFFF);
 	// TODO: Создать вспомогательные переменные, массивы и заполнить структуру ниже
 	DeviceParameters parameters = {
 			.coils_state = 0,
@@ -112,5 +117,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 extern "C" void SysTick_Handler(void) {
 
+	out_pins->Update();
 	HAL_IncTick();
 }

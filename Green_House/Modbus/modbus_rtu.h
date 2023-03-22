@@ -7,6 +7,7 @@
 
 #ifndef MODBUS_RTU_H_
 #define MODBUS_RTU_H_
+#include <stdint.h>
 
 #include "timer_interface.h"
 #include "hardware_interface.h"
@@ -71,9 +72,9 @@ namespace Modbus {
 
 		//XXX логика, связанная со свойствами ниже немного странная, по сути какой то псевдо программный таймер для определения таймаута
 		// таймаут нужен обязательно, вопрос в реализации открыт.
-		//TODO реализовать поддержку таймаута при вызове функции Request
-		uint16_t callback_frequency_;						// частота вызова функции update
-		uint16_t reseive_timeout_counter_;					// счетчик для таймаута приема ответа от slave'a
+		//TODO реализовать поддержку таймаута при вызове функции Request (реализовал, нужно протестировать и отладить)
+		uint16_t timeout_;						// частота вызова функции update
+		uint16_t reseive_timeout_counter_;		// счетчик для таймаута приема ответа от slave'a
 		ExceptionCode exception_code_;
 
 
@@ -172,7 +173,7 @@ namespace Modbus {
 		///		request - указатель на заполненнуж структуру запроса (см. modbus_requests.h)
 		/// 	command - команда modbus в соответствие с перечислением MbCommands
 		//---------------------------------------------------------------------------------------------------
-		Error Request(void* request, Commands command);
+		Error Request(void* request, Commands command, uint32_t timeout);
 		//---------------------------------------------------------------------------------------------------
 		//	функция ReturnSlaveResponce()
 		//

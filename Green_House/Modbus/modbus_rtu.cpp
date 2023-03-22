@@ -521,11 +521,11 @@ namespace Modbus {
 
 	//в данной функции мы формируем структуру modbus для запроса, а затем формируем массив tx_buf
 
-	Error ModbusRtu::Request(void* request, Commands command) {
+	Error ModbusRtu::Request(void* request, Commands command, uint32_t timeout) {
 
 		if(this->state_ != kWaitData) return kBusyError;
 		Error error = kNotError;
-
+		this->timeout_ = timeout;
 
 		switch (command) {
 
@@ -1024,7 +1024,7 @@ namespace Modbus {
 		//условие для проверки таймаута ожидания ответа от Slave'a
 		if(this->state_ == kReseivingResp) {
 			this->reseive_timeout_counter_++;
-			if(this->reseive_timeout_counter_ >= this->callback_frequency_) {
+			if(this->reseive_timeout_counter_ >= this->timeout_) {
 				this->timer_->Stop();
 				this->state_ = kZeroState;
 				this->error_state_ = kSlaveResponseTimeoutError;
