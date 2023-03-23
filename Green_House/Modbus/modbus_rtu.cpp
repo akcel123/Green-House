@@ -1002,7 +1002,7 @@ namespace Modbus {
 		this->interface_->tx_buf[4] = (this->params_.numReg_ >> 8) & 0xFF;
 		this->interface_->tx_buf[5] = (this->params_.numReg_) & 0xFF;
 
-		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len - 2);
 		this->interface_->tx_buf[this->interface_->tx_len - 2] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len - 1] = (crc16) & 0xFF;
 	}
@@ -1022,7 +1022,7 @@ namespace Modbus {
 			this->interface_->tx_buf[3 + this->device_parameters_.size_of_server_id] = 0xFF;
 		else
 			this->interface_->tx_buf[3 + this->device_parameters_.size_of_server_id] = 0x00;
-		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len);
+		crc16 = Crc::CrcCalculator::getInstance()->CrcCalc(this->interface_->tx_buf, this->interface_->tx_len - 2);
 		this->interface_->tx_buf[this->interface_->tx_len - 2] = (crc16 >> 8) & 0xFF;
 		this->interface_->tx_buf[this->interface_->tx_len - 1] = (crc16) & 0xFF;
 	}

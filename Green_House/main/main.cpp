@@ -20,6 +20,14 @@ using namespace Modbus;
 using namespace Uart;
 using namespace DiscreteIO;
 
+//FIXME Проверка записи/чтения регистров через Modbus
+uint32_t out_pins_state;
+uint32_t in_pins_state;
+uint32_t* holding_registers[] = {
+	&out_pins_state,
+	&in_pins_state
+};
+
 
 TimerInterface* program_timer = new Timer(10000);
 UartDriver* uart_interface = new UartDriver(19200U);	//uart tx работает, rx работает.
@@ -47,8 +55,8 @@ int main(void)
 			.num_of_coils = discrete_out_pins->GetNumOfDiscreteIO(),
 			.discrete_in_state = discrete_in_pins->GetDiscreteOutStateLink(),
 			.num_of_discrete_in = discrete_in_pins->GetNumOfDiscreteIO(),
-			.holding_registers = 0,
-			.num_of_holding_registers = 0,
+			.holding_registers = holding_registers,
+			.num_of_holding_registers = sizeof(holding_registers),
 			.server_id = server_id,
 			.size_of_server_id = sizeof(server_id)
 	};
@@ -121,6 +129,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 //===================================================
 
 extern "C" void SysTick_Handler(void) {
+
+	discrete_out_pins->SetDiscreteOutState(out_pins_state);
 
 	discrete_out_pins->Update();
 	discrete_in_pins->Update();

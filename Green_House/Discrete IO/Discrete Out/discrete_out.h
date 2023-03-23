@@ -72,7 +72,7 @@ namespace DiscreteIO {
 		void Init() override;
 		void Update() override;
 		uint8_t GetNumOfDiscreteIO() override {return NUM_OF_DISCRETE_OUT;}
-		void SetDiscreteOutState(uint32_t state) {this->state_.all_value = state;}
+		void SetDiscreteOutState(uint16_t state) {this->state_.all_value = state;}
 
 	};
 
