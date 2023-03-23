@@ -18,6 +18,10 @@ namespace DiscreteIO {
 	void DiscreteIn::Init() {
 		GPIO_InitTypeDef GPIO_InitStruct = {0};
 
+		__HAL_RCC_GPIOD_CLK_ENABLE();
+		__HAL_RCC_GPIOG_CLK_ENABLE();
+		__HAL_RCC_GPIOC_CLK_ENABLE();
+
 		/*Configure GPIO pins : DI13_MCU_Pin DI12_MCU_Pin DI11_MCU_Pin DI10_MCU_Pin */
 		GPIO_InitStruct.Pin = DI13_MCU_Pin|DI12_MCU_Pin|DI11_MCU_Pin|DI10_MCU_Pin;
 		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;

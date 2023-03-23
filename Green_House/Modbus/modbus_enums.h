@@ -39,8 +39,6 @@ namespace Modbus {
 		kNotSupportedFunctionCode,
 		kNotAvaibleAddrCode,
 		kDataValueError,
-		kReadWriteSystemVarWithoutPassw,
-		kWriteOnlyReadVar,
 		kCrcError,
 		kCommandExecutionError,
 		kSlaveResponseError,		// поля ответа слейва не совпадают с полями мастера.

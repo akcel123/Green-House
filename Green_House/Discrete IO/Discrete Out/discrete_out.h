@@ -12,7 +12,7 @@
 
 #include "discrete_io_interface.h"
 
-#define NUM_OF_DISCRETE_OUT 11U
+#define NUM_OF_DISCRETE_OUT 12U
 
 // PE1 -> DO1_MCU	-> bit0
 // PE0 -> DO2_MCU	-> bit1

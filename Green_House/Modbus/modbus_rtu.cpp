@@ -329,7 +329,10 @@ namespace Modbus {
 			if((tempNumReg < 0x0001) || (tempNumReg > 0x07D0)) {
 				this->exception_code_ = kExceptionCode3;
 				error = kDataValueError;
-			} else if((tempAddr >= this->device_parameters_.num_of_coils) || (tempAddr + tempNumReg >= this->device_parameters_.num_of_coils)) {
+			} else if (this->device_parameters_.num_of_coils == 0 || this->device_parameters_.coils_state == 0) {
+				this->exception_code_ = kExceptionCode1;
+				error = kNotSupportedFunctionCode;
+			} else if((tempAddr >= this->device_parameters_.num_of_coils) || (tempAddr + tempNumReg > this->device_parameters_.num_of_coils)) {
 				this->exception_code_ = kExceptionCode2;
 				error = kNotAvaibleAddrCode;
 			} else {
@@ -346,7 +349,10 @@ namespace Modbus {
 			if((tempNumReg < 0x0001) || (tempNumReg > 0x07D0)) {
 				this->exception_code_ = kExceptionCode3;
 				error = kDataValueError;
-			} else if((tempAddr >= this->device_parameters_.num_of_discrete_in) || (tempAddr + tempNumReg >= this->device_parameters_.num_of_discrete_in)) {
+			} else if (this->device_parameters_.num_of_discrete_in == 0 || this->device_parameters_.discrete_in_state == 0) {
+				this->exception_code_ = kExceptionCode1;
+				error = kNotSupportedFunctionCode;
+			} else if((tempAddr >= this->device_parameters_.num_of_discrete_in) || (tempAddr + tempNumReg > this->device_parameters_.num_of_discrete_in)) {
 				this->exception_code_ = kExceptionCode2;
 				error = kNotAvaibleAddrCode;
 			} else {
@@ -365,7 +371,10 @@ namespace Modbus {
 			if((tempNumReg != 0x0000) && (tempNumReg != 0xFF00)) {
 				this->exception_code_ = kExceptionCode3;
 				error = kDataValueError;
-			} else if(tempAddr >= this->device_parameters_.num_of_coils) {
+			} else if (this->device_parameters_.num_of_coils == 0 || this->device_parameters_.coils_state == 0) {
+				this->exception_code_ = kExceptionCode1;
+				error = kNotSupportedFunctionCode;
+			}else if(tempAddr >= this->device_parameters_.num_of_coils) {
 				this->exception_code_ = kExceptionCode2;
 				error = kNotAvaibleAddrCode;
 			} else {
@@ -383,22 +392,29 @@ namespace Modbus {
 				this->exception_code_ = kExceptionCode3;
 				error = kDataValueError;
 
-			} else if((tempAddr >= this->device_parameters_.num_of_coils) || (tempAddr + tempNumReg >= this->device_parameters_.num_of_coils)) {
+			} else if (this->device_parameters_.num_of_coils == 0 || this->device_parameters_.coils_state == 0) {
+				this->exception_code_ = kExceptionCode1;
+				error = kNotSupportedFunctionCode;
+			}else if((tempAddr >= this->device_parameters_.num_of_coils) || (tempAddr + tempNumReg > this->device_parameters_.num_of_coils)) {
 				this->exception_code_ = kExceptionCode2;
 				error = kNotAvaibleAddrCode;
 
 			} else {
 				this->params_.addr_ = tempAddr;
 				this->params_.len_ = tempNumReg;
-				//this->params_.val_ = (this->interface_->rx_buf[7] << 8) | (this->interface_->rx_buf[8]);
-				this->params_.val_ = this->interface_->rx_buf[7];
+				this->params_.val_ = (this->interface_->rx_buf[8] << 8) | (this->interface_->rx_buf[7]);
 			}
 
 			break;
 
 		case 0x11:
-			this->params_.command_ = tempFunc;
-			this->params_.current_command_ = kReportServerID0x11;
+			if (this->device_parameters_.size_of_server_id == 0 || this->device_parameters_.server_id == 0) {
+				this->exception_code_ = kExceptionCode1;
+				error = kNotSupportedFunctionCode;
+			} else {
+				this->params_.command_ = tempFunc;
+				this->params_.current_command_ = kReportServerID0x11;
+			}
 
 			break;
 
@@ -411,7 +427,10 @@ namespace Modbus {
 			if(((tempNumReg < 0x0001) || (tempNumReg > 0x007D))) {
 				this->exception_code_ = kExceptionCode3;
 				error = kDataValueError;
-			} else if((tempAddr >= this->device_parameters_.num_of_holding_registers) || (tempAddr + tempNumReg >= this->device_parameters_.num_of_holding_registers)) {
+			} else if (this->device_parameters_.num_of_holding_registers == 0 || this->device_parameters_.holding_registers == 0) {
+				this->exception_code_ = kExceptionCode1;
+				error = kNotSupportedFunctionCode;
+			} else if((tempAddr >= this->device_parameters_.num_of_holding_registers) || (tempAddr + tempNumReg > this->device_parameters_.num_of_holding_registers)) {
 				this->exception_code_ = kExceptionCode2;
 				error = kNotAvaibleAddrCode;
 			}
@@ -437,7 +456,10 @@ namespace Modbus {
 			if(((tempNumReg < 0x0001) || (tempNumReg > 0x07D0)) && (tempNumBytes != tempNumReg * 2)) {
 				this->exception_code_ = kExceptionCode3;
 				error = kDataValueError;
-			} else if((tempAddr >= this->device_parameters_.num_of_holding_registers) || (tempAddr + tempNumReg >= this->device_parameters_.num_of_holding_registers)) {
+			} else if (this->device_parameters_.num_of_holding_registers == 0 || this->device_parameters_.holding_registers == 0) {
+				this->exception_code_ = kExceptionCode1;
+				error = kNotSupportedFunctionCode;
+			} else if((tempAddr >= this->device_parameters_.num_of_holding_registers) || (tempAddr + tempNumReg > this->device_parameters_.num_of_holding_registers)) {
 				this->exception_code_ = kExceptionCode2;
 				error = kNotAvaibleAddrCode;
 			} else {
