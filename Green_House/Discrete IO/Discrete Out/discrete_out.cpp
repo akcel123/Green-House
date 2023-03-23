@@ -6,12 +6,12 @@
  */
 
 #include "discrete_out.h"
+
 #include "stm32f7xx_hal.h"
 
 namespace DiscreteIO {
 	DiscreteOut::DiscreteOut() {
-		// TODO Auto-generated constructor stub
-
+		this->state_.all_value = 0;
 	}
 
 	void DiscreteOut::Init() {
@@ -67,75 +67,75 @@ namespace DiscreteIO {
 		HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 	}
 
-	// данная функция выставляет пины в соответствии с конфигурацией, хранящейся в переменной out_state_
+	// данная функция выставляет пины в соответствии с конфигурацией, хранящейся в переменной state_
 	void DiscreteOut::Update() {
-		if (this->out_state_.bit.bit0 == 1) {
+		if (this->state_.bit.bit0 == 1) {
 			HAL_GPIO_WritePin(DO1_MCU_GPIO_Port, DO1_MCU_Pin, GPIO_PIN_SET);
 		} else {
 			HAL_GPIO_WritePin(DO1_MCU_GPIO_Port, DO1_MCU_Pin, GPIO_PIN_RESET);
 		}
 
-		if (this->out_state_.bit.bit1 == 1) {
+		if (this->state_.bit.bit1 == 1) {
 			HAL_GPIO_WritePin(DO2_MCU_GPIO_Port, DO2_MCU_Pin, GPIO_PIN_SET);
 		} else {
 			HAL_GPIO_WritePin(DO2_MCU_GPIO_Port, DO2_MCU_Pin, GPIO_PIN_RESET);
 		}
 
-		if (this->out_state_.bit.bit2 == 1) {
+		if (this->state_.bit.bit2 == 1) {
 			HAL_GPIO_WritePin(DO3_MCU_GPIO_Port, DO3_MCU_Pin, GPIO_PIN_SET);
 		} else {
 			HAL_GPIO_WritePin(DO3_MCU_GPIO_Port, DO3_MCU_Pin, GPIO_PIN_RESET);
 		}
 
-		if (this->out_state_.bit.bit3 == 1) {
+		if (this->state_.bit.bit3 == 1) {
 			HAL_GPIO_WritePin(DO4_MCU_GPIO_Port, DO4_MCU_Pin, GPIO_PIN_SET);
 		} else {
 			HAL_GPIO_WritePin(DO4_MCU_GPIO_Port, DO4_MCU_Pin, GPIO_PIN_RESET);
 		}
 
-		if (this->out_state_.bit.bit4 == 1) {
+		if (this->state_.bit.bit4 == 1) {
 			HAL_GPIO_WritePin(DO5_MCU_GPIO_Port, DO5_MCU_Pin, GPIO_PIN_SET);
 		} else {
 			HAL_GPIO_WritePin(DO5_MCU_GPIO_Port, DO5_MCU_Pin, GPIO_PIN_RESET);
 		}
 
-		if (this->out_state_.bit.bit5 == 1) {
+		if (this->state_.bit.bit5 == 1) {
 			HAL_GPIO_WritePin(DO6_MCU_GPIO_Port, DO6_MCU_Pin, GPIO_PIN_SET);
 		} else {
 			HAL_GPIO_WritePin(DO6_MCU_GPIO_Port, DO6_MCU_Pin, GPIO_PIN_RESET);
 		}
 
-		if (this->out_state_.bit.bit6 == 1) {
+		if (this->state_.bit.bit6 == 1) {
 			HAL_GPIO_WritePin(DO7_MCU_GPIO_Port, DO7_MCU_Pin, GPIO_PIN_SET);
 		} else {
 			HAL_GPIO_WritePin(DO7_MCU_GPIO_Port, DO7_MCU_Pin, GPIO_PIN_RESET);
 		}
 
-		if (this->out_state_.bit.bit7 == 1) {
+		if (this->state_.bit.bit7 == 1) {
 			HAL_GPIO_WritePin(DO8_MCU_GPIO_Port, DO8_MCU_Pin, GPIO_PIN_SET);
 		} else {
 			HAL_GPIO_WritePin(DO8_MCU_GPIO_Port, DO8_MCU_Pin, GPIO_PIN_RESET);
 		}
 
-		if (this->out_state_.bit.bit8 == 1) {
+		if (this->state_.bit.bit8 == 1) {
 			HAL_GPIO_WritePin(DO9_MCU_GPIO_Port, DO9_MCU_Pin, GPIO_PIN_SET);
 		} else {
 			HAL_GPIO_WritePin(DO9_MCU_GPIO_Port, DO9_MCU_Pin, GPIO_PIN_RESET);
 		}
 
-		if (this->out_state_.bit.bit9 == 1) {
+		if (this->state_.bit.bit9 == 1) {
 			HAL_GPIO_WritePin(DO10_MCU_GPIO_Port, DO10_MCU_Pin, GPIO_PIN_SET);
 		} else {
 			HAL_GPIO_WritePin(DO10_MCU_GPIO_Port, DO10_MCU_Pin, GPIO_PIN_RESET);
 		}
 
-		if (this->out_state_.bit.bit10 == 1) {
+		if (this->state_.bit.bit10 == 1) {
 			HAL_GPIO_WritePin(DO11_MCU_GPIO_Port, DO11_MCU_Pin, GPIO_PIN_SET);
 		} else {
 			HAL_GPIO_WritePin(DO11_MCU_GPIO_Port, DO11_MCU_Pin, GPIO_PIN_RESET);
 		}
 
-		if (this->out_state_.bit.bit11 == 1) {
+		if (this->state_.bit.bit11 == 1) {
 			HAL_GPIO_WritePin(DO12_MCU_GPIO_Port, DO12_MCU_Pin, GPIO_PIN_SET);
 		} else {
 			HAL_GPIO_WritePin(DO12_MCU_GPIO_Port, DO12_MCU_Pin, GPIO_PIN_RESET);

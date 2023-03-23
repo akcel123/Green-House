@@ -4,7 +4,9 @@
 #include "modbus_rtu.h"
 #include "program_timer.h"
 #include "device_parameters.h"
+
 #include "discrete_out.h"
+#include "discrete_in.h"
 
 
 // FIXME нужно ли предупреждение ниже?
@@ -22,7 +24,8 @@ using namespace DiscreteIO;
 TimerInterface* program_timer = new Timer(10000);
 UartDriver* uart_interface = new UartDriver(19200U);	//uart tx работает, rx работает.
 ModbusRtu modbus(program_timer, (HardwareInterface*)uart_interface, kSlave);
-DiscreteOut* out_pins = new DiscreteOut();
+DiscreteOut* discrete_out_pins = new DiscreteOut();
+DiscreteIn* discrete_in_pins = new DiscreteIn();
 
 TIM_HandleTypeDef htim14;
 
@@ -34,16 +37,18 @@ int main(void)
 	uart_interface->Init();
 	TIM14Init();
 
-	out_pins->Init();
-	out_pins->SetDiscreteOutState(0xFFFFFFFF);
+	discrete_out_pins->Init();
+	//discrete_out_pins->SetDiscreteOutState(0xFFFFFFFF);
+
+	discrete_in_pins->Init();
 	// TODO: Создать вспомогательные переменные, массивы и заполнить структуру ниже
 	DeviceParameters parameters = {
-			.coils_state = 0,
-			.num_of_coils = 0,
-			.discrete_in_state = 0,
-			.num_of_discrete_in = 0,
+			.coils_state = discrete_out_pins->GetDiscreteOutStateLink(),
+			.num_of_coils = discrete_out_pins->GetNumOfDiscreteIO(),
+			.discrete_in_state = discrete_in_pins->GetDiscreteOutStateLink(),
+			.num_of_discrete_in = discrete_in_pins->GetNumOfDiscreteIO(),
 			.holding_registers = 0,
-			.num_of_holding_registers = 12,
+			.num_of_holding_registers = 0,
 			.server_id = server_id,
 			.size_of_server_id = sizeof(server_id)
 	};
@@ -117,6 +122,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 extern "C" void SysTick_Handler(void) {
 
-	out_pins->Update();
+	discrete_out_pins->Update();
+	discrete_in_pins->Update();
 	HAL_IncTick();
 }

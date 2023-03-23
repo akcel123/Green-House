@@ -5,15 +5,15 @@
  *      Author: akcel
  */
 
-#ifndef DISCRETE_OUT_DISCRETE_IO_UNION_H_
-#define DISCRETE_OUT_DISCRETE_IO_UNION_H_
+#ifndef DISCRETE_IO_DISCRETE_IO_UNION_H_
+#define DISCRETE_IO_DISCRETE_IO_UNION_H_
 
 #include <stdint.h>
 
 namespace DiscreteIO {
 	union DiscreteIoUnion {
 
-		uint32_t all_value;
+		uint16_t all_value;
 		struct {
 			uint32_t bit0:1;
 			uint32_t bit1:1;
@@ -31,22 +31,6 @@ namespace DiscreteIO {
 			uint32_t bit13:1;
 			uint32_t bit14:1;
 			uint32_t bit15:1;
-			uint32_t bit16:1;
-			uint32_t bit17:1;
-			uint32_t bit18:1;
-			uint32_t bit19:1;
-			uint32_t bit20:1;
-			uint32_t bit21:1;
-			uint32_t bit22:1;
-			uint32_t bit23:1;
-			uint32_t bit24:1;
-			uint32_t bit25:1;
-			uint32_t bit26:1;
-			uint32_t bit27:1;
-			uint32_t bit28:1;
-			uint32_t bit29:1;
-			uint32_t bit30:1;
-			uint32_t bit31:1;
 		} bit;
 	};
 }
@@ -54,4 +38,4 @@ namespace DiscreteIO {
 
 
 
-#endif /* DISCRETE_OUT_DISCRETE_IO_UNION_H_ */
+#endif /* DISCRETE_IO_DISCRETE_IO_UNION_H_ */
